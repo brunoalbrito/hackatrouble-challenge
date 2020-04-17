@@ -1,0 +1,5 @@
+com/br/hackatrouble/challenge/ChallengeApplication.class
+com/br/hackatrouble/challenge/controller/UserController.class
+com/br/hackatrouble/challenge/service/UserService.class
+com/br/hackatrouble/challenge/model/User.class
+com/br/hackatrouble/challenge/repository/UserRepository.class
