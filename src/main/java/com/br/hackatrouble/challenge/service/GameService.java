@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class GameService {
         Status status = Status.valueOfLabel(gameDTO.getVote());
         Optional trainFound = trainRepository.findAll().stream().filter(train -> train.getNumber().equals(gameDTO.getTrem())).findFirst();
         Optional carFound = ((Train) trainFound.get()).getCars().stream().filter(car -> car.getNumber().equals(gameDTO.getVagao())).findFirst();
-        Car carEntity = (Car)carFound.get();
+        Car carEntity = (Car) carFound.get();
         carEntity.changeStatus(status);
         gameDTO.setTrem(((Train) trainFound.get()).getNumber());
         gameDTO.setVagao(carEntity.getNumber());
@@ -56,17 +57,19 @@ public class GameService {
     }
 
     private Optional<User> gameScoreLogic(GameDTO gameDTO) {
-        Optional<User> userFound = userRepository.findAll().stream().filter( user -> user.getEmail().equals(gameDTO.getEmail())).findFirst();
+        Optional<User> userFound = userRepository.findAll().stream().filter(user -> user.getEmail().equals(gameDTO.getEmail())).findFirst();
         userFound.ifPresent(user -> {
-            if(user.getScore() != null){
+            if (user.getScore() != null) {
                 user.addPointsAndScore();
-                scoreRepository.save(user.getScore());;
-            }else{
+                scoreRepository.save(user.getScore());
+                ;
+            } else {
                 Score score = new Score();
-                Long points = new Long((int)(Math.random() * 500));
+                Long points = new Long((int) (Math.random() * 500));
                 score.addPoints(points);
                 score.addAmount(new BigDecimal("0.10"));
-                scoreRepository.save(score);;
+                scoreRepository.save(score);
+                ;
                 user.setScore(score);
             }
             userRepository.save(user);
@@ -81,7 +84,13 @@ public class GameService {
             PlayerDTO playerDTO = new PlayerDTO(user.getName(), user.getScore());
             playerDTOList.add(playerDTO);
         });
-        rankDTO.setPlayers(playerDTOList);
+        rankDTO.setPlayers(sortByScore(playerDTOList));
         return rankDTO;
+    }
+
+    private List<PlayerDTO> sortByScore(List<PlayerDTO> playerDTOList) {
+        return playerDTOList.stream()
+                            .sorted(Comparator.comparingLong(PlayerDTO::getScore))
+                            .collect(Collectors.toList());
     }
 }
