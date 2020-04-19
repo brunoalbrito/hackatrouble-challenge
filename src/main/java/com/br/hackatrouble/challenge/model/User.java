@@ -1,17 +1,19 @@
 package com.br.hackatrouble.challenge.model;
 
 import com.br.hackatrouble.challenge.dto.UserDTO;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Optional;
 
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -34,5 +36,10 @@ public class User {
     public static User of(final UserDTO userDTO){
         User user = new User(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword());
         return user;
+    }
+
+
+    public boolean validadePassword(final String password){
+        return this.password.equals(password);
     }
 }
