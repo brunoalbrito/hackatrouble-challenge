@@ -32,5 +32,9 @@ public class Car {
         this.number = number;
         this.status = Status.VAZIO;
     }
+
+    public void changeStatus(Status status) {
+        this.status = status;
+    }
 }
 
