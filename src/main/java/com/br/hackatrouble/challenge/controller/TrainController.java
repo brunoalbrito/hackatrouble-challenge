@@ -5,6 +5,7 @@ import com.br.hackatrouble.challenge.service.TrainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +21,10 @@ public class TrainController {
     @PostMapping
     public ResponseEntity register(@RequestBody TrainDTO train){
         return ResponseEntity.ok(trainService.register(train));
+    }
+
+    @GetMapping
+    public ResponseEntity listAll(){
+        return ResponseEntity.ok(trainService.listAll());
     }
 }

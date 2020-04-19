@@ -3,7 +3,9 @@ package com.br.hackatrouble.challenge.model;
 
 import com.br.hackatrouble.challenge.dto.TrainDTO;
 import com.br.hackatrouble.challenge.enums.Status;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Train {
 
     @Id

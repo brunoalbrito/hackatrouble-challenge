@@ -31,12 +31,16 @@ public class TrainService {
 
     public List createCars(){
         List<Car> cars = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             Car car = new Car(String.valueOf(i), Status.VAZIO);
             car = carRepository.save(car);
             cars.add(car);
         }
 
         return cars;
+    }
+
+    public List<Train> listAll() {
+        return trainRepository.findAll();
     }
 }
