@@ -1,6 +1,8 @@
 package com.br.hackatrouble.challenge.service;
 
 import com.br.hackatrouble.challenge.dto.GameDTO;
+import com.br.hackatrouble.challenge.dto.PlayerDTO;
+import com.br.hackatrouble.challenge.dto.RankDTO;
 import com.br.hackatrouble.challenge.enums.Status;
 import com.br.hackatrouble.challenge.model.Score;
 import com.br.hackatrouble.challenge.model.User;
@@ -11,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @Autowired)
@@ -40,5 +45,16 @@ public class GameService {
             userRepository.save(user);
         });
         return userFound.map(user -> user.parseToGameDTO(status)).orElse(null);
+    }
+
+    public RankDTO rank() {
+        RankDTO rankDTO = new RankDTO();
+        List<PlayerDTO> playerDTOList = new ArrayList<>();
+        userRepository.findAll().stream().forEach(user -> {
+            PlayerDTO playerDTO = new PlayerDTO(user.getName(), user.getScore());
+            playerDTOList.add(playerDTO);
+        });
+        rankDTO.setPlayers(playerDTOList);
+        return rankDTO;
     }
 }
